@@ -41,8 +41,6 @@ public class BookRegistry implements IRegistry{
 				return book;
 			} catch (org.joda.time.IllegalFieldValueException e) {
 				throw new BookException("\tAdding the book failed: " + e.getMessage());
-			} catch (Exception e) {
-				throw new BookException("\tError BR1");
 			}
 		} else {
 			throw new BookException("\tBook already exists");

@@ -14,7 +14,7 @@ import com.library.xml.authorRegistry.AuthorMapXML;
 import com.library.xml.authorRegistry.StringAuthorAdapter;
 
 @XmlRootElement(name = "AuthorReg")
-public class AuthorRegistry implements IRegistry{
+public class AuthorRegistry implements IRegistry {
 
 	@XmlJavaTypeAdapter(StringAuthorAdapter.class)
 	private Map<String, Author> authorRegistry = new TreeMap<String, Author>();
@@ -23,12 +23,12 @@ public class AuthorRegistry implements IRegistry{
 	public AuthorRegistry() {
 
 	}
-	
+
 	@Override
 	public Iterator<String> getKeySetIter() {
 		return authorRegistry.keySet().iterator();
 	}
-	
+
 	public void convertDateStringToDate() {
 		for (Iterator<Author> iter = this.getAuthorsIter(); iter.hasNext();) {
 			Author tempAuthor = iter.next();
@@ -44,11 +44,7 @@ public class AuthorRegistry implements IRegistry{
 
 	public void setDescription(String name, String description) throws AuthorException {
 		if (this.authorRegistry.containsKey(name)) {
-			try {
-				this.authorRegistry.get(name).setDescription(description);
-			} catch (Exception e) {
-				throw new AuthorException("\t\tSetting description failed: " + e.getMessage());
-			}
+			this.authorRegistry.get(name).setDescription(description);
 		} else {
 			throw new AuthorException("\t\tAuthor not found");
 		}
@@ -69,7 +65,8 @@ public class AuthorRegistry implements IRegistry{
 
 	public void addBookWritten(String name, Book tempBook) {
 		if (this.authorRegistry.get(name) == null) {
-			this.authorRegistry.put(name, new Author(name, "auto-generated author\nThis author's data hasn't been filled yet", new DateTime(1, 1, 1, 0, 0)));
+			this.authorRegistry.put(name, new Author(name,
+					"auto-generated author\nThis author's data hasn't been filled yet", new DateTime(1, 1, 1, 0, 0)));
 		}
 		this.authorRegistry.get(name).addBooksWritten(tempBook);
 		AuthorMapXML.writeToXML(this);
@@ -81,7 +78,7 @@ public class AuthorRegistry implements IRegistry{
 			this.authorRegistry.remove(name);
 		}
 	}
-	
+
 	public Author getAuthor(String name) throws AuthorException {
 		if (authorRegistry.containsKey(name)) {
 			return authorRegistry.get(name);
@@ -89,7 +86,7 @@ public class AuthorRegistry implements IRegistry{
 			throw new AuthorException("\tAuthor not found");
 		}
 	}
-	
+
 	public Iterator<Author> getAuthorsIter() {
 		return authorRegistry.values().iterator();
 	}

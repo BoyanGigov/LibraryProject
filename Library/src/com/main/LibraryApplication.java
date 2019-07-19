@@ -59,9 +59,6 @@ public class LibraryApplication {
 			} catch (InputMismatchException e) {
 				System.out.println("\n\tINCORRECT INPUT 1\n");
 				continue;
-			} catch (Exception e) {
-				System.out.println("\n\tError 1");
-				return false;
 			} finally {
 				sc.nextLine();
 			}
@@ -72,9 +69,6 @@ public class LibraryApplication {
 					logRegMenu(option);
 				} catch (LoginException e) {
 					System.out.println("\n" + e.getMessage() + "\n");
-				} catch (Exception e) {
-					System.out.println("\n\tError 2");
-					return false;
 				}
 			} else {
 				System.out.println("\n\tINCORRECT INPUT 2\n");
@@ -121,14 +115,12 @@ public class LibraryApplication {
 		System.out.println("\n\n\n\t\tThis is your profile page:\n\n\tBooks taken:");
 		try {
 			printSBArray(bookingSystem.viewUserProfile(username));
+		} catch (BookException e) {
+			System.out.println("\n" + e.getMessage() + "\n");
 		} catch (BooktakerException e) {
 			System.out.println("\n" + e.getMessage() + " so user profile is empty\n");
 		} catch (UserException e) {
 			System.out.println("\n" + e.getMessage() + "\n");
-		} catch (Exception e) {
-			System.out.println("\n\tError 17");
-			e.printStackTrace();
-			return false;
 		}
 
 		System.out.println(
@@ -137,9 +129,6 @@ public class LibraryApplication {
 			option = sc.nextInt();
 		} catch (InputMismatchException e) {
 			System.out.println("\n\tINCORRECT INPUT 3\n");
-		} catch (Exception e) {
-			System.out.println("\n\tError 18");
-			return false;
 		} finally {
 			sc.nextLine();
 		}
@@ -177,15 +166,8 @@ public class LibraryApplication {
 			option = sc.nextInt();
 		} catch (InputMismatchException e) {
 			System.out.println("\n\tINCORRECT INPUT 12\n");
-		} catch (Exception e) {
-			System.out.println("\n\tError 19");
-			return false;
 		} finally {
-			try {
-				sc.nextLine();
-			} catch (Exception e) {
-				System.out.println("\n\tError 23");
-			}
+			sc.nextLine();
 		}
 		if (option == 0) {
 			// Log out
@@ -224,8 +206,6 @@ public class LibraryApplication {
 				System.out.println("\tIncorrect Input 21");
 			} catch (BookingException e) {
 				System.out.println("\n" + e.getMessage() + "\n");
-			} catch (Exception e) {
-				System.out.println("\n\tError 31");
 			} finally {
 				sc.nextLine();
 			}
@@ -240,9 +220,6 @@ public class LibraryApplication {
 				bookingSystem.createUser(UserTypeEnum.ADMIN, username, password);
 			} catch (LoginException e) {
 				System.out.println("\n" + e.getMessage() + "\n");
-			} catch (Exception e) {
-				System.out.println("\n\tError 20");
-				return false;
 			}
 		}
 		return true;
@@ -261,9 +238,6 @@ public class LibraryApplication {
 			} catch (InputMismatchException e) {
 				System.out.println("\n\tINCORRECT INPUT 4\n");
 				return;
-			} catch (Exception e) {
-				System.out.println("\n\tError 3");
-				return;
 			} finally {
 				sc.nextLine();
 			}
@@ -280,9 +254,6 @@ public class LibraryApplication {
 					} catch (InputMismatchException e) {
 						System.out.println("\n\tINCORRECT INPUT 5\n");
 						return;
-					} catch (Exception e) {
-						System.out.println("\n\tError 4");
-						return;
 					} finally {
 						sc.nextLine();
 						sc.useDelimiter("\\p{javaWhitespace}+");
@@ -290,9 +261,6 @@ public class LibraryApplication {
 				}
 			} catch (InputMismatchException e) {
 				System.out.println("\n\tINCORRECT INPUT 6\n");
-				return;
-			} catch (Exception e) {
-				System.out.println("\n\tError 5");
 				return;
 			} finally {
 				sc.nextLine();
@@ -305,9 +273,6 @@ public class LibraryApplication {
 					bookingSystem.requestTakeBooks(username, isbn, copies, deadline);
 				} catch (BookException e) {
 					System.out.println("\n" + e.getMessage() + "\n");
-				} catch (Exception e) {
-					System.out.println("\n\tError 6");
-					return;
 				}
 			}
 		}
@@ -318,16 +283,16 @@ public class LibraryApplication {
 		String isbn;
 		try {
 			printSBArray(bookingSystem.getUserTaken(username));
+		} catch (BookException e) {
+			System.out.println("\n" + e.getMessage() + "\n");
 		} catch (BooktakerException e) {
 			System.out.println("\n" + e.getMessage() + "\n");
 			return;
 		} catch (UserException e) {
 			System.out.println("\n" + e.getMessage() + "\n");
 			return;
-		} catch (Exception e) {
-			System.out.println("\n\tError 25");
-			return;
 		}
+
 		System.out.println("Select which book you'd like to return.\nisbn:");
 		isbn = sc.nextLine();
 		System.out.println("\nSelect how many copies you'd like to return.\ncopies:");
@@ -335,9 +300,6 @@ public class LibraryApplication {
 			copies = sc.nextInt();
 		} catch (InputMismatchException e) {
 			System.out.println("\n\tINCORRECT INPUT 7\n");
-			return;
-		} catch (Exception e) {
-			System.out.println("\n\tError 7");
 			return;
 		} finally {
 			sc.nextLine();
@@ -350,8 +312,8 @@ public class LibraryApplication {
 				bookingSystem.requestReturnBooks(username, isbn, copies);
 			} catch (BookException e) {
 				System.out.println("\n" + e.getMessage() + "\n");
-			} catch (Exception e) {
-				System.out.println("Error 26");
+			} catch (BooktakerException e) {
+				System.out.println("\n" + e.getMessage() + "\n");
 			}
 		}
 	}
@@ -365,9 +327,6 @@ public class LibraryApplication {
 		} catch (UserException e) {
 			System.out.println("\n" + e.getMessage() + "\n");
 			return false;
-		} catch (Exception e) {
-			System.out.println("\n\tError 8");
-			return false;
 		}
 	}
 
@@ -377,13 +336,12 @@ public class LibraryApplication {
 		String user = sc.nextLine();
 		try {
 			printSBArray(bookingSystem.viewUserProfile(user));
+		} catch (BookException e) {
+			System.out.println("\n" + e.getMessage() + "\n");
 		} catch (BooktakerException e) {
 			System.out.println("\n" + e.getMessage() + " so user profile is empty\n");
 		} catch (UserException e) {
 			System.out.println("\n" + e.getMessage() + "\n");
-		} catch (Exception e) {
-			System.out.println("\n\tError 9");
-			return;
 		}
 	}
 
@@ -397,8 +355,6 @@ public class LibraryApplication {
 		} catch (InputMismatchException e) {
 			System.out.println("\n\tINCORRECT INPUT 8\n");
 			return false;
-		} catch (Exception e) {
-			System.out.println("\n\tError 10");
 		} finally {
 			sc.nextLine();
 		}
@@ -412,9 +368,6 @@ public class LibraryApplication {
 			} catch (BookException e) {
 				System.out.println("\n" + e.getMessage() + "\n");
 				return false;
-			} catch (Exception e) {
-				System.out.println("\n\tError 11");
-				return false;
 			}
 		} else if (searchOption == 2) {
 			System.out.println("title:");
@@ -424,11 +377,7 @@ public class LibraryApplication {
 				System.out.println("\n\tNOTHING FOUND\n");
 				return false;
 			}
-			try {
-				narrowSearchBook(bookListSearch);
-			} catch (Exception e) {
-				System.out.println("LE1: " + e.getMessage() + "\n");
-			}
+			narrowSearchBook(bookListSearch);
 
 		} else if (searchOption == 3) {
 			System.out.println("author:");
@@ -438,11 +387,7 @@ public class LibraryApplication {
 				System.out.println("\n\tNOTHING FOUND\n");
 				return false;
 			}
-			try {
-				narrowSearchBook(bookListSearch);
-			} catch (Exception e) {
-				System.out.println("LE2: " + e.getMessage() + "\n");
-			}
+			narrowSearchBook(bookListSearch);
 		}
 		return true;
 	}
@@ -461,8 +406,6 @@ public class LibraryApplication {
 		} catch (InputMismatchException e) {
 			System.out.println("\n\tINCORRECT INPUT 9\n");
 			return bookListSearch;
-		} catch (Exception e) {
-			System.out.println("\n\tError 12");
 		} finally {
 			sc.nextLine();
 		}
@@ -475,8 +418,6 @@ public class LibraryApplication {
 			} catch (InputMismatchException e) {
 				System.out.println("\n\tINCORRECT INPUT 10\n");
 				return bookListSearch;
-			} catch (Exception e) {
-				System.out.println("\n\tError 13");
 			} finally {
 				sc.nextLine();
 			}
@@ -498,8 +439,6 @@ public class LibraryApplication {
 				} catch (InputMismatchException e) {
 					System.out.println("\n\tINCORRECT INPUT 11\n");
 					return bookListSearch;
-				} catch (Exception e) {
-					System.out.println("\n\tError 14");
 				} finally {
 					sc.nextLine();
 					sc.useDelimiter("\\p{javaWhitespace}+");
@@ -510,8 +449,6 @@ public class LibraryApplication {
 					bookListSearch.searchBookByPrice(sc.nextDouble());
 				} catch (InputMismatchException e) {
 					System.out.println("\n\tINCORRECT INPUT for price\n");
-				} catch (Exception e) {
-					System.out.println("\n\tError 15");
 				} finally {
 					sc.nextLine();
 				}
@@ -568,8 +505,8 @@ public class LibraryApplication {
 				bookingSystem.manageRequest(index, acceptReq);
 			} catch (BookException e) {
 				System.out.println("\n" + e.getMessage() + "\n");
-			} catch (Exception e) {
-				System.out.println("\n\tError 24");
+			} catch (BooktakerException e) {
+				System.out.println("\n\tUnexpected Exception 24: " + e.getMessage());
 			}
 		} else {
 			System.out.println("\n\tThere are currently no pending requests.");
@@ -587,8 +524,6 @@ public class LibraryApplication {
 			bookingSystem.setAuthorBirthDate(name, sc.nextInt(), sc.nextInt(), sc.nextInt());
 		} catch (InputMismatchException e) {
 			System.out.println("\n\tINCORRECT INPUT 18");
-		} catch (Exception e) {
-			System.out.println("\n\tError 29");
 		} finally {
 			sc.nextLine();
 			sc.useDelimiter("\\p{javaWhitespace}+");
@@ -623,8 +558,6 @@ public class LibraryApplication {
 			}
 		} catch (InputMismatchException e) {
 			System.out.println("\n\tINCORRECT INPUT 19");
-		} catch (Exception e) {
-			System.out.println("\n\tError 30");
 		} finally {
 			sc.nextLine();
 			sc.useDelimiter("\\p{javaWhitespace}+");
@@ -647,9 +580,6 @@ public class LibraryApplication {
 			return;
 		} catch (BookException e) {
 			System.out.println("\n" + e.getMessage() + "\n");
-		} catch (Exception e) {
-			System.out.println("\n\tError 16");
-			return;
 		}
 	}
 
@@ -676,9 +606,6 @@ public class LibraryApplication {
 			}
 		} catch (UserException e) {
 			System.out.println("\n" + e.getMessage() + "\n");
-		} catch (Exception e) {
-			System.out.println("\n\tError 22");
-			return;
 		}
 	}
 
@@ -694,9 +621,6 @@ public class LibraryApplication {
 			} catch (InputMismatchException e) {
 				System.out.println("\n\tINCORRECT INPUT 15\n");
 				return;
-			} catch (Exception e) {
-				System.out.println("\n\tError 27");
-				return;
 			} finally {
 				sc.nextLine();
 			}
@@ -708,9 +632,6 @@ public class LibraryApplication {
 			option = sc.nextShort();
 		} catch (InputMismatchException e) {
 			System.out.println("\n\tINCORRECT INPUT 16\n");
-			return;
-		} catch (Exception e) {
-			System.out.println("\n\tError 28");
 			return;
 		} finally {
 			sc.nextLine();
@@ -743,10 +664,7 @@ public class LibraryApplication {
 				System.out.println("Created default admin.\nusername: admin\npassword: pass \n");
 				setAdminCreated();
 			} catch (LoginException e) {
-				System.out.println("\tError creating default admin. " + e.getMessage() + "\n");
-			} catch (Exception e) {
-				System.out.println("\n\tError 21");
-				return;
+				System.out.println("\tUnexpected Exception creating default admin. " + e.getMessage() + "\n");
 			}
 		}
 	}

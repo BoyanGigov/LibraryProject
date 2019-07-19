@@ -37,9 +37,9 @@ public class UserRegistry implements IRegistry{
 				tempUser = new User(userType, username, password);
 				this.userRegistry.put(username, tempUser);
 			} catch (IllegalArgumentException e) {
-				System.out.println("\n\tError UR1");
+				System.out.println("\n\tUnexpected Exception UR1");
 			} catch (NoSuchAlgorithmException e) {
-				System.out.println("\n\tError UR2");
+				System.out.println("\n\tUnexpected Exception UR2");
 			}
 		} else {
 			throw new LoginException("\tUSERNAME ALREADY TAKEN");
@@ -63,10 +63,7 @@ public class UserRegistry implements IRegistry{
 				return false;
 			}
 		} catch (NoSuchAlgorithmException e) {
-			System.out.println("\n\tError UR3");
-			return false;
-		} catch (Error e) {
-			System.out.println("\n\tError UR4");
+			System.out.println("\n\tUnexpected Exception UR3");
 			return false;
 		}
 	}

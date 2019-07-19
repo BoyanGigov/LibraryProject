@@ -69,9 +69,7 @@ public class BooktakerRegistry implements IRegistry {
 							this.takerMap.get(username).get(isbn).remove();
 						}
 					} catch (NoSuchElementException e) {
-						throw new BooktakerException("\n\tError: PQ is empty, removing\n");
-					} catch (Exception e) {
-						throw new BooktakerException("Error BT1");
+						throw new BooktakerException("\n\tUnexpected Exception: PQ is empty, removing\n");
 					}
 				}
 			} else {
